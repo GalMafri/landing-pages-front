@@ -1,0 +1,9 @@
+// Global classes goes here
+
+@import "./../mixins/breaks";
+
+.contianer {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 15px;
+}

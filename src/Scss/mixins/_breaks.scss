@@ -1,0 +1,19 @@
+// Media query in the project
+
+@mixin breakBig() {
+  @media (min-width: 1200px) {
+    @content;
+  }
+}
+
+@mixin breakMin() {
+  @media (min-width: 992px) {
+    @content;
+  }
+}
+
+@mixin breakSmallM() {
+  @media (min-width: 768px) {
+    @content;
+  }
+}

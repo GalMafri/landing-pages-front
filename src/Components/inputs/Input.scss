@@ -1,0 +1,47 @@
+@import "./../../Scss/main.scss";
+
+.input {
+  position: relative;
+  width: fit-content;
+  &_type {
+    padding: 10px 5px;
+    border-radius: 3px;
+    border: none;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.6980392157);
+    width: 240px;
+
+    &:active + .input_text,
+    &:focus + .input_text {
+      top: -20px;
+      left: 0;
+      transform: translateY(0);
+      font-size: 14px;
+      opacity: 0.6;
+      color: #fff;
+    }
+  }
+
+  &_text {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 5px;
+    pointer-events: none;
+    font-size: 16px;
+    font-weight: 600;
+    transition: 0.3s;
+  }
+
+  &_lableTouch {
+    top: -20px;
+    left: 0;
+    transform: translateY(0);
+    font-size: 14px;
+    opacity: 0.6;
+    color: #fff;
+  }
+}
+
+.error-border {
+  border-color: red !important;
+}
