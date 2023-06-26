@@ -1,6 +1,10 @@
 // Defining an asynchronous function called Fetch
-const Fetch = async function (url, options = {}) {
+const FetchData = async function (url, options = {}) {
+  console.log(url);
   try {
+    options.headers = {
+      "Content-Type": "application/json",
+    };
     // Using the fetch API to make a request to the specified URL with the given options
     const call = await fetch(url, options);
     // Parsing the response body as JSON and returning it
@@ -15,4 +19,4 @@ const Fetch = async function (url, options = {}) {
 };
 
 // Exporting the Fetch function as the default export of the module
-export default Fetch;
+export default FetchData;

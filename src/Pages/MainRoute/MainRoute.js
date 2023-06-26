@@ -1,22 +1,42 @@
 // Importing the required dependencies
 import { Routes, Route } from "react-router";
-import Home from "../Home/Home";
+import Login from "../Login/Login";
+import jwt_decode from "jwt-decode";
+import { useEffect, useState } from "react";
 import Page404 from "../Page404/Page404";
-import Posts from "../Posts/Posts";
-import SinglePost from "../SinglePost/SinglePost";
-import "./MainRoute.scss";
+import { useDispatch, useSelector } from "react-redux";
+import GetLocalStorage from "../../functions/GetLocalStorage";
+import { setUserDataHandler } from "../../Store/UserData";
 
+import "./MainRoute.scss";
 // Defining a functional component called MainRoute
 const MainRoute = () => {
-  // The component returns JSX that renders the contents of the page
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.UserData);
+  const [login, setLogin] = useState(false);
+
+  useEffect(() => {
+    const storageUser = GetLocalStorage("user");
+    if (storageUser && storageUser.token) {
+      const { exp } = jwt_decode(storageUser.token);
+      const expirationTime = exp * 1000 - 60000;
+      if (Date.now() >= expirationTime) {
+        setLogin(false);
+      } else {
+        const { userId } = jwt_decode(storageUser.token);
+        dispatch(setUserDataHandler({ UserData: userId }));
+        const remaningTime = expirationTime - new Date();
+        setLogin(true);
+        setTimeout(() => {
+          setLogin(false);
+        }, remaningTime);
+      }
+    }
+  }, [user]);
+
   return (
     <div className="pages">
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/posts" element={<Posts title="Posts" />} />
-        <Route path="/posts/:postid" element={<SinglePost />} />
-        <Route path="*" element={<Page404 title="404" />} />
-      </Routes>
+      <Routes>{!login && <Route path="/" element={<Login />} />}</Routes>
     </div>
   );
 };

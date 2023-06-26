@@ -4,12 +4,13 @@
   position: fixed;
   width: 100%;
   height: 65px;
-  background-color: grey;
+  background-color: #fff;
   display: flex;
   align-items: center;
   z-index: 100;
+  box-shadow: -2px 0px 13px 0px rgba(0, 0, 0, 0.75);
   @include breakMin() {
-    height: 110px;
+    height: 80px;
   }
 
   &_wrapper {
@@ -68,6 +69,6 @@
   width: 100%;
   height: 65px;
   @include breakMin() {
-    height: 110px;
+    height: 80px;
   }
 }

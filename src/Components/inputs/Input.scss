@@ -3,12 +3,13 @@
 .input {
   position: relative;
   width: fit-content;
+  width: 100%;
   &_type {
     padding: 10px 5px;
     border-radius: 3px;
     border: none;
     border-bottom: 2px solid rgba(0, 0, 0, 0.6980392157);
-    width: 240px;
+    width: 100%;
 
     &:active + .input_text,
     &:focus + .input_text {
@@ -39,6 +40,11 @@
     font-size: 14px;
     opacity: 0.6;
     color: #fff;
+  }
+
+  &_error {
+    @include font-size;
+    color: red;
   }
 }
 
