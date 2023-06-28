@@ -25,8 +25,11 @@
 }
 
 @mixin title {
-  font-size: 20px;
+  font-size: 26px;
   font-weight: bold;
+  @media (min-width: 992px) {
+    font-size: 32px;
+  }
 }
 
 @mixin row($num: 2, $gap: 0px, $justify: center) {

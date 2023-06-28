@@ -1,0 +1,33 @@
+.editTool {
+  display: flex;
+  margin-bottom: 15px;
+  align-items: center;
+  &_text {
+    font-size: 16px;
+    font-weight: 500;
+    margin-right: 15px;
+  }
+  &_input {
+    flex-grow: 1;
+    border: unset;
+    background-color: unset;
+  }
+
+  &_url,
+  &_number {
+    flex-grow: 1;
+    padding: 5px 10px;
+    margin-top: 5px;
+  }
+
+  &_select {
+    margin-top: 5px;
+    padding: 5px 10px;
+  }
+}
+
+.editToolColumn {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}

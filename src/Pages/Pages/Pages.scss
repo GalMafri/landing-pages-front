@@ -1,0 +1,31 @@
+@import "./../../Scss/main.scss";
+
+.pages {
+  flex-grow: 1;
+  &_link {
+    padding-bottom: 20px;
+    border-bottom: 1px solid grey;
+    width: 100%;
+  }
+  &_add {
+    @include font-size;
+    padding: 10px;
+    background-color: #0a66c2;
+    color: #fff;
+    border-radius: 5px;
+    border: unset;
+    cursor: pointer;
+    text-decoration: unset;
+    display: block;
+    width: fit-content;
+  }
+
+  &_all {
+    padding: 20px 0;
+
+    &-title {
+      @include title;
+      text-transform: uppercase;
+    }
+  }
+}

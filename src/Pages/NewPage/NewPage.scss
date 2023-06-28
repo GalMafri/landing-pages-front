@@ -1,0 +1,66 @@
+@import "./../../Scss/main.scss";
+
+.newPage {
+  position: relative;
+  width: 100%;
+
+  &_wrapper {
+    display: flex;
+  }
+
+  &_menu {
+    width: 300px;
+    height: calc(100vh - 65px);
+    box-shadow: -2px 0px 13px 0px rgba(0, 0, 0, 0.75);
+    background-color: #fff;
+    overflow: auto;
+    @include breakMin() {
+      height: calc(100vh - 80px);
+    }
+
+    &-btns {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    &-elements {
+      flex-basis: 48%;
+      background-color: unset;
+      @include font-size;
+      border: unset;
+      padding: 10px 0;
+      border-bottom: 1px solid #000;
+      cursor: pointer;
+      &-active {
+        background-color: #0a66c2;
+        color: #fff;
+      }
+    }
+
+    &-wrapper {
+      @include row(2, 15px, flex-start);
+    }
+
+    &-element {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 15px;
+      background-color: #f3f5f9;
+      border: unset;
+      text-transform: uppercase;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+  }
+
+  &_html {
+    flex-grow: 1;
+    height: calc(100vh - 65px);
+    @include breakMin() {
+      height: calc(100vh - 80px);
+    }
+  }
+}

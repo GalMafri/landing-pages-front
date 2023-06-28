@@ -15,9 +15,9 @@ export const MenuReduce = createSlice({
     // Define the changeMenuHandler reducer
     changeMenuHandler(state, action) {
       // Toggle the value of the menu state
-      menu = !menu;
+      menu = action.payload.menu;
       // Return the new value to become the new state of the slice
-      return menu;
+      return action.payload.menu;
     },
     // Define the disableMenuHandler reducer
     disableMenuHandler() {

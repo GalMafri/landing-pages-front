@@ -9,6 +9,10 @@ import GetLocalStorage from "../../functions/GetLocalStorage";
 import { setUserDataHandler } from "../../Store/UserData";
 
 import "./MainRoute.scss";
+import Home from "../Home/Home";
+import Dashboard from "../../Components/dashboard/Dashboard";
+import Pages from "../Pages/Pages";
+import NewPage from "../NewPage/NewPage";
 // Defining a functional component called MainRoute
 const MainRoute = () => {
   const dispatch = useDispatch();
@@ -24,6 +28,7 @@ const MainRoute = () => {
         setLogin(false);
       } else {
         const { userId } = jwt_decode(storageUser.token);
+        if (!userId) return;
         dispatch(setUserDataHandler({ UserData: userId }));
         const remaningTime = expirationTime - new Date();
         setLogin(true);
@@ -36,7 +41,21 @@ const MainRoute = () => {
 
   return (
     <div className="pages">
-      <Routes>{!login && <Route path="/" element={<Login />} />}</Routes>
+      {!login && (
+        <Routes>
+          <Route path="/" element={<Login />} />
+        </Routes>
+      )}
+
+      {login && (
+        <Dashboard>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/pages" element={<Pages />} />
+            <Route path="/pages/new" element={<NewPage />} />
+          </Routes>
+        </Dashboard>
+      )}
     </div>
   );
 };
