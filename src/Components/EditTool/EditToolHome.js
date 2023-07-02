@@ -24,16 +24,13 @@ const EditToolHome = ({ handler, style }) => {
   };
 
   useEffect(() => {
-    if (
-      elementStyle &&
-      elementStyle["background-image"] &&
-      elementStyle["background-image"].trim().length > 0
-    )
+    if (elementStyle && elementStyle["background-image"] && elementStyle["background-image"].trim().length > 0)
       setUrl(elementStyle["background-image"]);
   }, []);
 
   return (
     <Fragment>
+      <h3 className="editTool_title">body</h3>
       {/* defualt text color */}
       <div className="editTool">
         <label className="editTool_text">Text Color:</label>
@@ -42,7 +39,7 @@ const EditToolHome = ({ handler, style }) => {
           type="color"
           name="color"
           onChange={EditStyleHandler}
-          defaultValue={elementStyle && elementStyle["color"]}
+          defaultValue={(elementStyle && elementStyle["color"]) || ""}
         />
       </div>
 
@@ -54,7 +51,7 @@ const EditToolHome = ({ handler, style }) => {
           type="number"
           name="padding-top"
           onChange={EditStyleHandler}
-          defaultValue={elementStyle && elementStyle["padding-top"]}
+          defaultValue={(elementStyle && elementStyle["padding-top"]) || ""}
         />
       </div>
       <div className="editToolColumn">
@@ -64,7 +61,7 @@ const EditToolHome = ({ handler, style }) => {
           type="number"
           name="padding-bottom"
           onChange={EditStyleHandler}
-          defaultValue={elementStyle && elementStyle["padding-bottom"]}
+          defaultValue={(elementStyle && elementStyle["padding-bottom"]) || ""}
         />
       </div>
       <div className="editToolColumn">
@@ -74,7 +71,7 @@ const EditToolHome = ({ handler, style }) => {
           type="number"
           name="padding-left"
           onChange={EditStyleHandler}
-          defaultValue={elementStyle && elementStyle["padding-left"]}
+          defaultValue={(elementStyle && elementStyle["padding-left"]) || ""}
         />
       </div>
       <div className="editToolColumn">
@@ -84,7 +81,7 @@ const EditToolHome = ({ handler, style }) => {
           type="number"
           name="padding-right"
           onChange={EditStyleHandler}
-          defaultValue={elementStyle && elementStyle["padding-right"]}
+          defaultValue={(elementStyle && elementStyle["padding-right"]) || ""}
         />
       </div>
 
@@ -96,7 +93,7 @@ const EditToolHome = ({ handler, style }) => {
           type="number"
           name="margin-left"
           onChange={EditStyleHandler}
-          defaultValue={elementStyle && elementStyle["margin-left"]}
+          defaultValue={(elementStyle && elementStyle["margin-left"]) || ""}
         />
       </div>
       <div className="editToolColumn">
@@ -106,7 +103,7 @@ const EditToolHome = ({ handler, style }) => {
           type="number"
           name="margin-right"
           onChange={EditStyleHandler}
-          defaultValue={elementStyle && elementStyle["margin-right"]}
+          defaultValue={(elementStyle && elementStyle["margin-right"]) || ""}
         />
       </div>
 
@@ -118,7 +115,7 @@ const EditToolHome = ({ handler, style }) => {
           type="color"
           name="background-color"
           onChange={EditStyleHandler}
-          defaultValue={elementStyle && elementStyle["background-color"]}
+          defaultValue={(elementStyle && elementStyle["background-color"]) || ""}
         />
       </div>
 
@@ -130,9 +127,7 @@ const EditToolHome = ({ handler, style }) => {
           type="url"
           name="background-image"
           onChange={EditStyleUrlHandler}
-          defaultValue={
-            elementStyle && elementStyle["background-image"] ? elementStyle["background-image"] : ""
-          }
+          defaultValue={elementStyle && elementStyle["background-image"] ? elementStyle["background-image"] : ""}
         />
       </div>
 
@@ -146,11 +141,7 @@ const EditToolHome = ({ handler, style }) => {
               type="url"
               name="background-size"
               onChange={EditStyleUrlHandler}
-              defaultValue={
-                elementStyle && elementStyle["background-size"]
-                  ? elementStyle["background-size"]
-                  : ""
-              }
+              defaultValue={elementStyle && elementStyle["background-size"] ? elementStyle["background-size"] : ""}
             >
               <option value="auto">Auto</option>
               <option value="cover">Cover</option>
@@ -166,11 +157,7 @@ const EditToolHome = ({ handler, style }) => {
               type="url"
               name="background-repeat"
               onChange={EditStyleUrlHandler}
-              defaultValue={
-                elementStyle && elementStyle["background-repeat"]
-                  ? elementStyle["background-repeat"]
-                  : ""
-              }
+              defaultValue={elementStyle && elementStyle["background-repeat"] ? elementStyle["background-repeat"] : ""}
             >
               <option value="repeat">Repeat</option>
               <option value="repeat-x">Repeat Horizontally</option>

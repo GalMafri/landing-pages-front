@@ -9,6 +9,8 @@ import EditElement from "./EditElement";
 import BuildStyle from "../../functions/HtmlFunctions/BuildStyle";
 import BuildHtml from "../../functions/HtmlFunctions/BuildHtml";
 
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+
 import "./NewPage.scss";
 
 const NewPage = () => {
@@ -19,6 +21,15 @@ const NewPage = () => {
   const [style, setStyle] = useState({});
   const [styleHtml, setStyleHtml] = useState(false);
   const [currentElement, setCurrentElement] = useState(-1);
+  const [htmlElements, setHtmlElements] = useState([]);
+
+  const handleDragEnd = (result) => {
+    if (!result.destination) return;
+    const htmlElementsArray = Array.from(htmlElements);
+    const [reorderedItem] = htmlElementsArray.splice(result.source.index, 1);
+    htmlElementsArray.splice(result.destination.index, 0, reorderedItem);
+    setHtmlElements(htmlElementsArray);
+  };
 
   const changeStatusHandler = (value) => {
     setStatus(value);
@@ -26,6 +37,13 @@ const NewPage = () => {
 
   const changeEditHandler = (value) => {
     setEdit(value);
+  };
+
+  const editTextHandler = (id, text) => {
+    const newHtmlElements = [...htmlElements];
+    const index = newHtmlElements.findIndex((item) => item.id === id);
+    newHtmlElements[index]["text"] = text;
+    setHtmlElements(newHtmlElements);
   };
 
   const editStyleHandler = (value, name, element) => {
@@ -36,14 +54,25 @@ const NewPage = () => {
     });
   };
 
-  const buildHtmlHandler = (tag) => {
+  const buildHtmlHandler = (tag, editElement) => {
     const objHtml = BuildHtml(tag);
-    const parent = document.querySelector(".newPage_html");
-    parent.insertAdjacentHTML("beforeend", objHtml.element);
-    setEdit(1);
+    setHtmlElements((prev) => [...prev, objHtml]);
+    setEdit(editElement);
     setStatus(2);
     setCurrentElement(objHtml.id);
   };
+
+  // change edit item on click
+  window.addEventListener("click", function (event) {
+    if (event.srcElement.classList.contains("item")) {
+      setStatus(2);
+      setCurrentElement(event.srcElement.getAttribute("id"));
+      setEdit(Number(event.srcElement.getAttribute("data-status")));
+    } else if (event.srcElement.classList.contains("newPage_html")) {
+      setStatus(2);
+      setEdit(-1);
+    }
+  });
 
   useEffect(() => {
     if (!isEmptyObjHandler(style)) setStyleHtml(BuildStyle(style));
@@ -57,7 +86,7 @@ const NewPage = () => {
       } catch (error) {}
     };
     if (!elements) getHtmlEelements();
-  }, [style, currentElement]);
+  }, [style, currentElement, elements, dispatch]);
 
   return (
     <Fragment>
@@ -69,17 +98,13 @@ const NewPage = () => {
             {/* btns for change status */}
             <InsideWrapper classProps={"newPage_menu-btns"}>
               <button
-                className={
-                  "newPage_menu-elements " + (status === 1 ? "newPage_menu-elements-active" : "")
-                }
+                className={"newPage_menu-elements " + (status === 1 ? "newPage_menu-elements-active" : "")}
                 onClick={() => changeStatusHandler(1)}
               >
                 Elements
               </button>
               <button
-                className={
-                  "newPage_menu-elements " + (status === 2 ? "newPage_menu-elements-active" : "")
-                }
+                className={"newPage_menu-elements " + (status === 2 ? "newPage_menu-elements-active" : "")}
                 onClick={() => changeStatusHandler(2)}
               >
                 Edit
@@ -89,11 +114,7 @@ const NewPage = () => {
             {elements && status === 1 && (
               <InsideWrapper classProps={"newPage_menu-wrapper"}>
                 {elements.map((element) => (
-                  <button
-                    key={uuid()}
-                    className="newPage_menu-element"
-                    onClick={() => buildHtmlHandler(element.title)}
-                  >
+                  <button key={uuid()} className="newPage_menu-element" onClick={() => buildHtmlHandler(element.title, element.status)}>
                     {element.title}
                   </button>
                 ))}
@@ -108,12 +129,39 @@ const NewPage = () => {
                   handler={editStyleHandler}
                   style={style}
                   currentElement={currentElement}
+                  editText={editTextHandler}
+                  elements={htmlElements}
                 />
               </InsideWrapper>
             )}
           </div>
           {/* the html builder */}
-          <div className="newPage_html"></div>
+          <DragDropContext onDragEnd={handleDragEnd}>
+            <Droppable droppableId="droppable">
+              {(provided) => (
+                <div className="newPage_html" {...provided.droppableProps} ref={provided.innerRef}>
+                  {htmlElements &&
+                    htmlElements.map((item, index) => (
+                      <Draggable key={item.id} draggableId={item.id} index={index}>
+                        {(provided) => (
+                          <item.tag
+                            className="item"
+                            id={item.id}
+                            data-status={item.status}
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                          >
+                            {item.text}
+                          </item.tag>
+                        )}
+                      </Draggable>
+                    ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
         </div>
       </div>
     </Fragment>

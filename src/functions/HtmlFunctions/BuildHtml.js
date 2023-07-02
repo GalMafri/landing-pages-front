@@ -6,8 +6,19 @@ const BuildHtml = (tag) => {
   if (tag === "h1" || tag === "h2" || tag === "h3" || tag === "h4" || tag === "h5" || tag === "h6")
     return {
       id,
-      element: `<${tag} id="${id}"">example text</${tag}>`,
+      tag,
+      text: "Example text",
+      status: 1,
     };
+
+  if (tag === "span") {
+    return {
+      id,
+      tag,
+      text: "Example text",
+      status: 2,
+    };
+  }
 };
 
 export default BuildHtml;

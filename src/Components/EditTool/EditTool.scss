@@ -2,6 +2,12 @@
   display: flex;
   margin-bottom: 15px;
   align-items: center;
+  &_title {
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 25px;
+  }
   &_text {
     font-size: 16px;
     font-weight: 500;
