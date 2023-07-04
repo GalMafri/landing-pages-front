@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import "./EditTool.scss";
 
-const EditToolTitle = ({ handler, style, id, editText, elements }) => {
+const EditToolButton = ({ handler, style, id, editText, elements }) => {
   const element = `#${id}`;
   const currentElement = elements.find((item) => item.id === id);
   const [maxWidth, setMaxWidth] = useState(false);
@@ -41,7 +41,7 @@ const EditToolTitle = ({ handler, style, id, editText, elements }) => {
         />
       </div>
 
-      {/* defualt text color */}
+      {/*  color */}
       <div className="editTool">
         <label className="editTool_text">Text Color:</label>
         <input
@@ -50,6 +50,42 @@ const EditToolTitle = ({ handler, style, id, editText, elements }) => {
           name="color"
           onChange={EditStyleHandler}
           defaultValue={(elementStyle && elementStyle["color"]) || ""}
+        />
+      </div>
+
+      {/* background color */}
+      <div className="editTool">
+        <label className="editTool_text">Background Color:</label>
+        <input
+          className="editTool_input"
+          type="color"
+          name="background-color"
+          onChange={EditStyleHandler}
+          defaultValue={(elementStyle && elementStyle["background-color"]) || ""}
+        />
+      </div>
+
+      {/* border color */}
+      <div className="editTool">
+        <label className="editTool_text">Border Color:</label>
+        <input
+          className="editTool_input"
+          type="color"
+          name="border-color"
+          onChange={EditStyleHandler}
+          defaultValue={(elementStyle && elementStyle["border-color"]) || ""}
+        />
+      </div>
+
+      {/* border */}
+      <div className="editToolColumn">
+        <label className="editTool_text">Border:</label>
+        <input
+          className="editTool_number"
+          type="number"
+          name="border"
+          onChange={EditStyleHandler}
+          defaultValue={(elementStyle && elementStyle["border"]) || ""}
         />
       </div>
 
@@ -67,81 +103,40 @@ const EditToolTitle = ({ handler, style, id, editText, elements }) => {
 
       {/* font wight */}
       <div className="editToolColumn">
-        <label className="editTool_text">Font Weight:</label>
+        <label className="editTool_text">Text Decoration:</label>
         <select
           className="editTool_select"
           type="url"
-          name="font-weight"
+          name="text-decoration"
           onChange={EditStyleHandler}
           defaultValue={
-            elementStyle && elementStyle["font-weight"]
-              ? elementStyle["font-weight"]
-              : currentElement.tag === "p"
-              ? "400"
-              : "700"
+            elementStyle && elementStyle["text-decoration"]
+              ? elementStyle["text-decoration"]
+              : "none"
           }
         >
-          <option value="100">100</option>
-          <option value="200">200</option>
-          <option value="300">300</option>
-          <option value="400">400</option>
-          <option value="500">500</option>
-          <option value="600">600</option>
-          <option value="700">700</option>
-          <option value="800">800</option>
-          <option value="900">900</option>
+          <option value="none">None</option>
+          <option value="underline">Underline</option>
+          <option value="overline">Overline</option>
+          <option value="line-through">Line-through</option>
+          <option value="underline overline">Underline Overline</option>
+          <option value="underline line-through">Underline Line-through</option>
+          <option value="overline line-through">Overline Line-through</option>
+          <option value="underline overline line-through">Underline Overline Line-through</option>
         </select>
       </div>
 
-      {/* text align */}
       <div className="editToolColumn">
-        <label className="editTool_text">Text Align:</label>
-        <select
-          className="editTool_select"
-          type="url"
-          name="text-align"
-          onChange={EditStyleHandler}
-          defaultValue={
-            elementStyle && elementStyle["text-align"] ? elementStyle["text-align"] : "left"
-          }
-        >
-          <option value="center">center</option>
-          <option value="left">left</option>
-          <option value="right">right</option>
-        </select>
-      </div>
-
-      {/* max width */}
-      <div className="editToolColumn">
-        <label className="editTool_text">Max Width: (Pixels)</label>
+        <label className="editTool_text">Border Radius:</label>
         <input
           className="editTool_number"
           type="number"
           min={0}
-          name="max-width"
+          name="border-radius"
           onChange={EditStyleHandler}
-          defaultValue={(elementStyle && elementStyle["max-width"]) || ""}
+          defaultValue={(elementStyle && elementStyle["border-radius"]) || ""}
         />
       </div>
-
-      {/* center element wrapper */}
-      {maxWidth && (
-        <div className="editToolColumn">
-          <label className="editTool_text">Center Element:</label>
-          <select
-            className="editTool_select"
-            type="url"
-            name="center-element"
-            onChange={EditStyleHandler}
-            defaultValue={
-              elementStyle && elementStyle["center-element"] ? elementStyle["center-element"] : ""
-            }
-          >
-            <option value="none">None</option>
-            <option value="center">Center</option>
-          </select>
-        </div>
-      )}
 
       {/* font wight */}
       <div className="editToolColumn">
@@ -152,7 +147,7 @@ const EditToolTitle = ({ handler, style, id, editText, elements }) => {
           name="font-weight"
           onChange={EditStyleHandler}
           defaultValue={
-            elementStyle && elementStyle["font-weight"] ? elementStyle["font-weight"] : "700"
+            elementStyle && elementStyle["font-weight"] ? elementStyle["font-weight"] : "400"
           }
         >
           <option value="100">100</option>
@@ -165,28 +160,6 @@ const EditToolTitle = ({ handler, style, id, editText, elements }) => {
           <option value="800">800</option>
           <option value="900">900</option>
         </select>
-      </div>
-
-      {/* sticky */}
-      <div className="editToolColumn">
-        <label className="editTool_text">Sticky Left:</label>
-        <input
-          className="editTool_number"
-          type="number"
-          name="sticky-left"
-          onChange={EditStyleHandler}
-          defaultValue={(elementStyle && elementStyle["sticky-left"]) || ""}
-        />
-      </div>
-      <div className="editToolColumn">
-        <label className="editTool_text">Sticky Right:</label>
-        <input
-          className="editTool_number"
-          type="number"
-          name="sticky-right"
-          onChange={EditStyleHandler}
-          defaultValue={(elementStyle && elementStyle["sticky-right"]) || ""}
-        />
       </div>
 
       {/* padding */}
@@ -235,6 +208,75 @@ const EditToolTitle = ({ handler, style, id, editText, elements }) => {
         />
       </div>
 
+      {/* max width */}
+      <div className="editToolColumn">
+        <label className="editTool_text">Max Width: (Pixels)</label>
+        <input
+          className="editTool_number"
+          type="number"
+          min={0}
+          name="max-width"
+          onChange={EditStyleHandler}
+          defaultValue={(elementStyle && elementStyle["max-width"]) || ""}
+        />
+      </div>
+
+      {/* center element wrapper */}
+      {maxWidth && (
+        <div className="editToolColumn">
+          <label className="editTool_text">Center Element:</label>
+          <select
+            className="editTool_select"
+            type="url"
+            name="center-element"
+            onChange={EditStyleHandler}
+            defaultValue={
+              elementStyle && elementStyle["center-element"] ? elementStyle["center-element"] : ""
+            }
+          >
+            <option value="none">None</option>
+            <option value="center">Center</option>
+          </select>
+        </div>
+      )}
+      {/* text align */}
+      <div className="editToolColumn">
+        <label className="editTool_text">Text Align:</label>
+        <select
+          className="editTool_select"
+          type="url"
+          name="text-align"
+          onChange={EditStyleHandler}
+          defaultValue={
+            elementStyle && elementStyle["text-align"] ? elementStyle["text-align"] : "left"
+          }
+        >
+          <option value="center">center</option>
+          <option value="left">left</option>
+          <option value="right">right</option>
+        </select>
+      </div>
+      {/* sticky */}
+      <div className="editToolColumn">
+        <label className="editTool_text">Sticky Left:</label>
+        <input
+          className="editTool_number"
+          type="number"
+          name="sticky-left"
+          onChange={EditStyleHandler}
+          defaultValue={(elementStyle && elementStyle["sticky-left"]) || ""}
+        />
+      </div>
+      <div className="editToolColumn">
+        <label className="editTool_text">Sticky Right:</label>
+        <input
+          className="editTool_number"
+          type="number"
+          name="sticky-right"
+          onChange={EditStyleHandler}
+          defaultValue={(elementStyle && elementStyle["sticky-right"]) || ""}
+        />
+      </div>
       {/* margin */}
       <div className="editToolColumn">
         <label className="editTool_text">Margin Top:</label>
@@ -286,4 +328,4 @@ const EditToolTitle = ({ handler, style, id, editText, elements }) => {
   );
 };
 
-export default EditToolTitle;
+export default EditToolButton;

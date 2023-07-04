@@ -170,7 +170,7 @@ const EditToolHome = ({ handler, style }) => {
               defaultValue={
                 elementStyle && elementStyle["background-position"]
                   ? elementStyle["background-position"]
-                  : ""
+                  : "top"
               }
             >
               <option value="center">Center</option>

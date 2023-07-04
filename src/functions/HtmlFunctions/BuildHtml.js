@@ -28,6 +28,27 @@ const BuildHtml = (tag) => {
       status: 3,
     };
   }
+
+  if (tag === "link") {
+    return {
+      id,
+      tag,
+      text: "Example text",
+      href: "#",
+      target: "none",
+      status: 4,
+    };
+  }
+
+  if (tag === "button") {
+    return {
+      id,
+      tag,
+      text: "Example text",
+      status: 5,
+      function: false,
+    };
+  }
 };
 
 export default BuildHtml;

@@ -9,11 +9,11 @@ import EditElement from "./EditElement";
 import BuildStyle from "../../functions/HtmlFunctions/BuildStyle";
 import BuildHtml from "../../functions/HtmlFunctions/BuildHtml";
 import $ from "jquery";
+import { Link } from "react-router-dom";
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 import "./NewPage.scss";
-import { element } from "prop-types";
 
 const NewPage = () => {
   const dispatch = useDispatch();
@@ -41,10 +41,12 @@ const NewPage = () => {
     setEdit(value);
   };
 
-  const editTextHandler = (id, text) => {
+  const editTextHandler = (id, text, type) => {
     const newHtmlElements = [...htmlElements];
     const index = newHtmlElements.findIndex((item) => item.id === id);
-    if (newHtmlElements[index]["tag"] === "img") {
+    if (type) {
+      newHtmlElements[index][type] = text;
+    } else if (newHtmlElements[index]["tag"] === "img") {
       newHtmlElements[index]["src"] = text;
     } else {
       newHtmlElements[index]["text"] = text;
@@ -114,6 +116,52 @@ const NewPage = () => {
             title={"This is an img"}
           />
         </div>
+      );
+    } else if (item.tag === "link") {
+      return (
+        <a
+          className="item"
+          id={item.id}
+          data-status={item.status}
+          ref={provided.innerRef}
+          href={item.href}
+          target={item.target}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+          onClick={(event) => event.preventDefault()}
+        >
+          <button
+            className="newPage_html-x"
+            style={{ display: "none" }}
+            data-id={item.id}
+            onClick={() => removeElementHandler(item.id)}
+          >
+            x
+          </button>
+          {item.text}
+        </a>
+      );
+    } else if (item.tag === "button") {
+      return (
+        <item.tag
+          className="item"
+          id={item.id}
+          data-status={item.status}
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+          onClick={(event) => event.preventDefault()}
+        >
+          {item.text}
+          <button
+            className="newPage_html-x"
+            style={{ display: "none" }}
+            data-id={item.id}
+            onClick={() => removeElementHandler(item.id)}
+          >
+            x
+          </button>
+        </item.tag>
       );
     }
     return (

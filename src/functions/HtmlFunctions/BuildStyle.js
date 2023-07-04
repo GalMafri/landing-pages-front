@@ -17,7 +17,10 @@ const BuildStyle = (state) => {
         styleSheet += `\n margin-left:calc(50% - ${value}px) !important;`;
       } else if (keyStyle === "sticky-right") {
         styleSheet += `\n margin-right:calc(50% - ${value}px) !important;`;
+      } else if (keyStyle === "border") {
+        styleSheet += `\n border:${value}px solid;`;
       }
+
       // include px
       else if (
         keyStyle === "padding-top" ||
@@ -31,7 +34,8 @@ const BuildStyle = (state) => {
         keyStyle === "font-size" ||
         keyStyle === "max-width" ||
         keyStyle === "width" ||
-        keyStyle === "height"
+        keyStyle === "height" ||
+        keyStyle === "border-radius"
       )
         styleSheet += `\n ${keyStyle}:${value}px;`;
       else styleSheet += `\n ${keyStyle}:${value};`;

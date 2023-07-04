@@ -67,6 +67,10 @@
       position: relative;
     }
 
+    button:not(.newPage_html-x) {
+      pointer-events: none;
+    }
+
     &-x {
       width: 30px;
       height: 30px;
