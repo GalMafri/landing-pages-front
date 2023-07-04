@@ -59,6 +59,7 @@
   &_html {
     flex-grow: 1;
     height: calc(100vh - 65px);
+    position: relative;
     @include breakMin() {
       height: calc(100vh - 80px);
     }

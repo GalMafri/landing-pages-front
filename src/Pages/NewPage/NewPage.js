@@ -9,8 +9,6 @@ import EditElement from "./EditElement";
 import BuildStyle from "../../functions/HtmlFunctions/BuildStyle";
 import BuildHtml from "../../functions/HtmlFunctions/BuildHtml";
 import $ from "jquery";
-import { Link } from "react-router-dom";
-
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 import "./NewPage.scss";
@@ -35,10 +33,6 @@ const NewPage = () => {
 
   const changeStatusHandler = (value) => {
     setStatus(value);
-  };
-
-  const changeEditHandler = (value) => {
-    setEdit(value);
   };
 
   const editTextHandler = (id, text, type) => {
@@ -68,6 +62,9 @@ const NewPage = () => {
     setEdit(editElement);
     setStatus(2);
     setCurrentElement(objHtml.id);
+    setStyle((prev) => {
+      return { ...prev, [`#${objHtml.id}}`]: { position: "static" } };
+    });
   };
 
   // change edit item on click
@@ -210,9 +207,26 @@ const NewPage = () => {
       $(`.newPage_html-x[data-id=${id}]`).hide();
     });
 
+    // add position to absolute elements
+    htmlElements.forEach((element) => {
+      $(`#${element.id}`).onPositionChanged(function () {
+        if ($(`#${element.id}`).css("z-index") == "5000") {
+          const newStyle = { ...style };
+          if (!newStyle[`#${element.id}`]) newStyle[`#${element.id}`] = { position: "static" };
+          newStyle[`#${element.id}`]["left"] = $(`#${element.id}`).position().left - 300;
+          newStyle[`#${element.id}`]["top"] = $(`#${element.id}`).position().top - 80;
+          delete newStyle[`#${element.id}`]["right"];
+          delete newStyle[`#${element.id}`]["bottom"];
+          setStyleHtml(BuildStyle(newStyle));
+        }
+      });
+    });
+
     // get the elements
     if (!elements) getHtmlEelements();
   }, [style, currentElement, elements, dispatch]);
+
+  console.log(styleHtml);
 
   return (
     <Fragment>

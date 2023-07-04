@@ -19,8 +19,10 @@ const BuildStyle = (state) => {
         styleSheet += `\n margin-right:calc(50% - ${value}px) !important;`;
       } else if (keyStyle === "border") {
         styleSheet += `\n border:${value}px solid;`;
+      } else if (keyStyle === "position" && (value === "fixed" || value === "absolute")) {
+        styleSheet += `\n ${keyStyle}:${value};`;
+        styleSheet += `\n width: fit-content !important;`;
       }
-
       // include px
       else if (
         keyStyle === "padding-top" ||
@@ -35,7 +37,11 @@ const BuildStyle = (state) => {
         keyStyle === "max-width" ||
         keyStyle === "width" ||
         keyStyle === "height" ||
-        keyStyle === "border-radius"
+        keyStyle === "border-radius" ||
+        keyStyle === "top" ||
+        keyStyle === "bottom" ||
+        keyStyle === "left" ||
+        keyStyle === "right"
       )
         styleSheet += `\n ${keyStyle}:${value}px;`;
       else styleSheet += `\n ${keyStyle}:${value};`;

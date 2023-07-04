@@ -235,51 +235,116 @@ const EditToolTitle = ({ handler, style, id, editText, elements }) => {
         />
       </div>
 
-      {/* margin */}
+      {/* position */}
       <div className="editToolColumn">
-        <label className="editTool_text">Margin Top:</label>
-        <input
-          className="editTool_number"
-          type="number"
-          name="margin-top"
+        <label className="editTool_text">Position:</label>
+        <select
+          className="editTool_select"
+          name="position"
           onChange={EditStyleHandler}
-          defaultValue={(elementStyle && elementStyle["margin-top"]) || ""}
-        />
+          defaultValue={elementStyle && elementStyle["position"] ? elementStyle["position"] : ""}
+        >
+          <option value="static">Static</option>
+          <option value="absolute">Absolute</option>
+          <option value="fixed">Fixed</option>
+        </select>
       </div>
 
-      <div className="editToolColumn">
-        <label className="editTool_text">Margin Bottom:</label>
-        <input
-          className="editTool_number"
-          type="number"
-          name="margin-bottom"
-          onChange={EditStyleHandler}
-          defaultValue={(elementStyle && elementStyle["margin-bottom"]) || ""}
-        />
-      </div>
-
-      {elementStyle["center-element"] !== "center" && (
+      {/* position */}
+      {(elementStyle["position"] === "absolute" || elementStyle["position"] === "fixed") && (
         <Fragment>
           <div className="editToolColumn">
-            <label className="editTool_text">Margin Left:</label>
+            <label className="editTool_text">Top:</label>
             <input
               className="editTool_number"
               type="number"
-              name="margin-left"
+              name="top"
               onChange={EditStyleHandler}
-              defaultValue={(elementStyle && elementStyle["margin-left"]) || ""}
+              defaultValue={(elementStyle && elementStyle["top"]) || ""}
             />
           </div>
           <div className="editToolColumn">
-            <label className="editTool_text">Margin Right:</label>
+            <label className="editTool_text">Bottom:</label>
             <input
               className="editTool_number"
               type="number"
-              name="margin-right"
+              name="bottom"
               onChange={EditStyleHandler}
-              defaultValue={(elementStyle && elementStyle["margin-right"]) || ""}
+              defaultValue={(elementStyle && elementStyle["bottom"]) || ""}
             />
           </div>
+          <div className="editToolColumn">
+            <label className="editTool_text">Left:</label>
+            <input
+              className="editTool_number"
+              type="number"
+              name="left"
+              onChange={EditStyleHandler}
+              defaultValue={(elementStyle && elementStyle["left"]) || ""}
+            />
+          </div>
+          <div className="editToolColumn">
+            <label className="editTool_text">Right:</label>
+            <input
+              className="editTool_number"
+              type="number"
+              name="right"
+              onChange={EditStyleHandler}
+              defaultValue={(elementStyle && elementStyle["right"]) || ""}
+            />
+          </div>
+        </Fragment>
+      )}
+
+      {/* margin */}
+      {elementStyle["position"] !== "absolute" && elementStyle["position"] !== "fixed" && (
+        <Fragment>
+          <div className="editToolColumn">
+            <label className="editTool_text">Margin Top:</label>
+            <input
+              className="editTool_number"
+              type="number"
+              name="margin-top"
+              onChange={EditStyleHandler}
+              defaultValue={(elementStyle && elementStyle["margin-top"]) || ""}
+            />
+          </div>
+
+          <div className="editToolColumn">
+            <label className="editTool_text">Margin Bottom:</label>
+            <input
+              className="editTool_number"
+              type="number"
+              name="margin-bottom"
+              onChange={EditStyleHandler}
+              defaultValue={(elementStyle && elementStyle["margin-bottom"]) || ""}
+            />
+          </div>
+
+          {elementStyle["center-element"] !== "center" && (
+            <Fragment>
+              <div className="editToolColumn">
+                <label className="editTool_text">Margin Left:</label>
+                <input
+                  className="editTool_number"
+                  type="number"
+                  name="margin-left"
+                  onChange={EditStyleHandler}
+                  defaultValue={(elementStyle && elementStyle["margin-left"]) || ""}
+                />
+              </div>
+              <div className="editToolColumn">
+                <label className="editTool_text">Margin Right:</label>
+                <input
+                  className="editTool_number"
+                  type="number"
+                  name="margin-right"
+                  onChange={EditStyleHandler}
+                  defaultValue={(elementStyle && elementStyle["margin-right"]) || ""}
+                />
+              </div>
+            </Fragment>
+          )}
         </Fragment>
       )}
     </Fragment>
