@@ -8,10 +8,12 @@ import uuid from "react-uuid";
 import EditElement from "./EditElement";
 import BuildStyle from "../../functions/HtmlFunctions/BuildStyle";
 import BuildHtml from "../../functions/HtmlFunctions/BuildHtml";
+import $ from "jquery";
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 import "./NewPage.scss";
+import { element } from "prop-types";
 
 const NewPage = () => {
   const dispatch = useDispatch();
@@ -42,14 +44,18 @@ const NewPage = () => {
   const editTextHandler = (id, text) => {
     const newHtmlElements = [...htmlElements];
     const index = newHtmlElements.findIndex((item) => item.id === id);
-    newHtmlElements[index]["text"] = text;
+    if (newHtmlElements[index]["tag"] === "img") {
+      newHtmlElements[index]["src"] = text;
+    } else {
+      newHtmlElements[index]["text"] = text;
+    }
     setHtmlElements(newHtmlElements);
   };
 
   const editStyleHandler = (value, name, element) => {
     setStyle((prev) => {
       if (isEmptyObjHandler(prev[element])) prev[element] = {};
-      prev[element][name] = value;
+      prev[element][name] = value.length > 0 ? value : false;
       return { ...prev };
     });
   };
@@ -63,16 +69,76 @@ const NewPage = () => {
   };
 
   // change edit item on click
-  window.addEventListener("click", function (event) {
-    if (event.srcElement.classList.contains("item")) {
-      setStatus(2);
-      setCurrentElement(event.srcElement.getAttribute("id"));
-      setEdit(Number(event.srcElement.getAttribute("data-status")));
-    } else if (event.srcElement.classList.contains("newPage_html")) {
-      setStatus(2);
-      setEdit(-1);
-    }
+  $(".newPage_html").on("click", function () {
+    setStatus(2);
+    setEdit(-1);
   });
+  $(document).on("click", ".item", function (event) {
+    setStatus(2);
+    setCurrentElement($(this).attr("id"));
+    setEdit(Number($(this).attr("data-status")));
+  });
+
+  // remove element
+  const removeElementHandler = (id) => {
+    const index = htmlElements.findIndex((element) => element.id === id);
+    let newHtmlElements = [...htmlElements];
+    delete newHtmlElements[index];
+    newHtmlElements = newHtmlElements.filter((element) => element !== undefined);
+    setHtmlElements(newHtmlElements);
+    setTimeout(() => {
+      setStatus(1);
+    }, 0);
+  };
+
+  const buildElementHandler = (provided, item) => {
+    if (item && item.tag === "img") {
+      return (
+        <div>
+          <button
+            className="newPage_html-x"
+            style={{ display: "none" }}
+            data-id={item.id}
+            onClick={() => removeElementHandler(item.id)}
+          >
+            x
+          </button>
+          <item.tag
+            className="item"
+            id={item.id}
+            data-status={item.status}
+            ref={provided.innerRef}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            src={item.src ?? ""}
+            title={"This is an img"}
+          />
+        </div>
+      );
+    }
+    return (
+      <item.tag
+        className="item"
+        id={item.id}
+        data-status={item.status}
+        ref={provided.innerRef}
+        {...provided.draggableProps}
+        {...provided.dragHandleProps}
+      >
+        <Fragment>
+          {item.text}
+          <button
+            className="newPage_html-x"
+            style={{ display: "none" }}
+            data-id={item.id}
+            onClick={() => removeElementHandler(item.id)}
+          >
+            x
+          </button>
+        </Fragment>
+      </item.tag>
+    );
+  };
 
   useEffect(() => {
     if (!isEmptyObjHandler(style)) setStyleHtml(BuildStyle(style));
@@ -85,6 +151,18 @@ const NewPage = () => {
         setElements(data.elements);
       } catch (error) {}
     };
+
+    // show and hide remove element
+    $(".item").on("mouseenter", function (e) {
+      const id = $(this).attr("id");
+      $(`.newPage_html-x[data-id=${id}]`).show();
+    });
+    $(".item").on("mouseleave", function (e) {
+      const id = $(this).attr("id");
+      $(`.newPage_html-x[data-id=${id}]`).hide();
+    });
+
+    // get the elements
     if (!elements) getHtmlEelements();
   }, [style, currentElement, elements, dispatch]);
 
@@ -98,13 +176,17 @@ const NewPage = () => {
             {/* btns for change status */}
             <InsideWrapper classProps={"newPage_menu-btns"}>
               <button
-                className={"newPage_menu-elements " + (status === 1 ? "newPage_menu-elements-active" : "")}
+                className={
+                  "newPage_menu-elements " + (status === 1 ? "newPage_menu-elements-active" : "")
+                }
                 onClick={() => changeStatusHandler(1)}
               >
                 Elements
               </button>
               <button
-                className={"newPage_menu-elements " + (status === 2 ? "newPage_menu-elements-active" : "")}
+                className={
+                  "newPage_menu-elements " + (status === 2 ? "newPage_menu-elements-active" : "")
+                }
                 onClick={() => changeStatusHandler(2)}
               >
                 Edit
@@ -114,7 +196,11 @@ const NewPage = () => {
             {elements && status === 1 && (
               <InsideWrapper classProps={"newPage_menu-wrapper"}>
                 {elements.map((element) => (
-                  <button key={uuid()} className="newPage_menu-element" onClick={() => buildHtmlHandler(element.title, element.status)}>
+                  <button
+                    key={uuid()}
+                    className="newPage_menu-element"
+                    onClick={() => buildHtmlHandler(element.title, element.status)}
+                  >
                     {element.title}
                   </button>
                 ))}
@@ -143,18 +229,7 @@ const NewPage = () => {
                   {htmlElements &&
                     htmlElements.map((item, index) => (
                       <Draggable key={item.id} draggableId={item.id} index={index}>
-                        {(provided) => (
-                          <item.tag
-                            className="item"
-                            id={item.id}
-                            data-status={item.status}
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                          >
-                            {item.text}
-                          </item.tag>
-                        )}
+                        {(provided) => buildElementHandler(provided, item)}
                       </Draggable>
                     ))}
                   {provided.placeholder}

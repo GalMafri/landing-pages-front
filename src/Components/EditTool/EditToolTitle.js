@@ -19,8 +19,12 @@ const EditToolTitle = ({ handler, style, id, editText, elements }) => {
   };
 
   useEffect(() => {
-    if (elementStyle && elementStyle["max-width"] && elementStyle["max-width"].trim().length > 0) setMaxWidth(elementStyle["max-width"]);
-  }, [elementStyle]);
+    if (elementStyle && elementStyle["max-width"] && elementStyle["max-width"].trim().length > 0)
+      setMaxWidth(elementStyle["max-width"]);
+    else setMaxWidth(false);
+  }, [elementStyle, style]);
+
+  if (!currentElement) return;
 
   return (
     <Fragment>
@@ -69,7 +73,13 @@ const EditToolTitle = ({ handler, style, id, editText, elements }) => {
           type="url"
           name="font-weight"
           onChange={EditStyleHandler}
-          defaultValue={elementStyle && elementStyle["font-weight"] ? elementStyle["font-weight"] : "700"}
+          defaultValue={
+            elementStyle && elementStyle["font-weight"]
+              ? elementStyle["font-weight"]
+              : currentElement.tag === "p"
+              ? "400"
+              : "700"
+          }
         >
           <option value="100">100</option>
           <option value="200">200</option>
@@ -91,7 +101,9 @@ const EditToolTitle = ({ handler, style, id, editText, elements }) => {
           type="url"
           name="text-align"
           onChange={EditStyleHandler}
-          defaultValue={elementStyle && elementStyle["text-align"] ? elementStyle["text-align"] : "left"}
+          defaultValue={
+            elementStyle && elementStyle["text-align"] ? elementStyle["text-align"] : "left"
+          }
         >
           <option value="center">center</option>
           <option value="left">left</option>
@@ -105,6 +117,7 @@ const EditToolTitle = ({ handler, style, id, editText, elements }) => {
         <input
           className="editTool_number"
           type="number"
+          min={0}
           name="max-width"
           onChange={EditStyleHandler}
           defaultValue={(elementStyle && elementStyle["max-width"]) || ""}
@@ -120,7 +133,9 @@ const EditToolTitle = ({ handler, style, id, editText, elements }) => {
             type="url"
             name="center-element"
             onChange={EditStyleHandler}
-            defaultValue={elementStyle && elementStyle["center-element"] ? elementStyle["center-element"] : ""}
+            defaultValue={
+              elementStyle && elementStyle["center-element"] ? elementStyle["center-element"] : ""
+            }
           >
             <option value="none">None</option>
             <option value="center">Center</option>
@@ -136,7 +151,9 @@ const EditToolTitle = ({ handler, style, id, editText, elements }) => {
           type="url"
           name="font-weight"
           onChange={EditStyleHandler}
-          defaultValue={elementStyle && elementStyle["font-weight"] ? elementStyle["font-weight"] : "700"}
+          defaultValue={
+            elementStyle && elementStyle["font-weight"] ? elementStyle["font-weight"] : "700"
+          }
         >
           <option value="100">100</option>
           <option value="200">200</option>
@@ -150,12 +167,37 @@ const EditToolTitle = ({ handler, style, id, editText, elements }) => {
         </select>
       </div>
 
+      {/* sticky */}
+      <div className="editToolColumn">
+        <label className="editTool_text">Sticky Left:</label>
+        <input
+          className="editTool_number"
+          type="number"
+          min={0}
+          name="sticky-left"
+          onChange={EditStyleHandler}
+          defaultValue={(elementStyle && elementStyle["sticky-left"]) || ""}
+        />
+      </div>
+      <div className="editToolColumn">
+        <label className="editTool_text">Sticky Right:</label>
+        <input
+          className="editTool_number"
+          type="number"
+          min={0}
+          name="sticky-right"
+          onChange={EditStyleHandler}
+          defaultValue={(elementStyle && elementStyle["sticky-right"]) || ""}
+        />
+      </div>
+
       {/* padding */}
       <div className="editToolColumn">
         <label className="editTool_text">Padding Top:</label>
         <input
           className="editTool_number"
           type="number"
+          min={0}
           name="padding-top"
           onChange={EditStyleHandler}
           defaultValue={(elementStyle && elementStyle["padding-top"]) || ""}
@@ -166,6 +208,7 @@ const EditToolTitle = ({ handler, style, id, editText, elements }) => {
         <input
           className="editTool_number"
           type="number"
+          min={0}
           name="padding-bottom"
           onChange={EditStyleHandler}
           defaultValue={(elementStyle && elementStyle["padding-bottom"]) || ""}
@@ -176,6 +219,7 @@ const EditToolTitle = ({ handler, style, id, editText, elements }) => {
         <input
           className="editTool_number"
           type="number"
+          min={0}
           name="padding-left"
           onChange={EditStyleHandler}
           defaultValue={(elementStyle && elementStyle["padding-left"]) || ""}
@@ -186,6 +230,7 @@ const EditToolTitle = ({ handler, style, id, editText, elements }) => {
         <input
           className="editTool_number"
           type="number"
+          min={0}
           name="padding-right"
           onChange={EditStyleHandler}
           defaultValue={(elementStyle && elementStyle["padding-right"]) || ""}

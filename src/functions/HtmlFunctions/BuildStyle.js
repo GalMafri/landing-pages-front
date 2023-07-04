@@ -1,15 +1,22 @@
 const BuildStyle = (state) => {
   let styleSheet = "";
   for (const key in state) {
-    if (styleSheet !== "" || styleSheet.trim() !== "" || styleSheet.length > 0) styleSheet += "\n } \n";
+    if (styleSheet !== "" || styleSheet.trim() !== "" || styleSheet.length > 0)
+      styleSheet += "\n } \n";
     styleSheet += `${key} {`;
     for (const [keyStyle, value] of Object.entries(state[key])) {
+      if (!value || value === "") continue;
       // if is img
       if (keyStyle === "background-image") styleSheet += `\n ${keyStyle}:url(${value});`;
       // center element
       else if (keyStyle === "center-element" && value === "center") {
         styleSheet += `\n margin-left:auto !important;`;
         styleSheet += `\n margin-right:auto !important;`;
+      } else if (keyStyle === "center-element" && value === "none") {
+      } else if (keyStyle === "sticky-left") {
+        styleSheet += `\n margin-left:calc(50% - ${value}px) !important;`;
+      } else if (keyStyle === "sticky-right") {
+        styleSheet += `\n margin-right:calc(50% - ${value}px) !important;`;
       }
       // include px
       else if (
@@ -22,14 +29,17 @@ const BuildStyle = (state) => {
         keyStyle === "margin-left" ||
         keyStyle === "margin-right" ||
         keyStyle === "font-size" ||
-        keyStyle === "max-width"
+        keyStyle === "max-width" ||
+        keyStyle === "width" ||
+        keyStyle === "height"
       )
         styleSheet += `\n ${keyStyle}:${value}px;`;
       else styleSheet += `\n ${keyStyle}:${value};`;
     }
   }
 
-  if (styleSheet !== "" || styleSheet.trim() !== "" || styleSheet.length > 0) styleSheet += "\n } \n";
+  if (styleSheet !== "" || styleSheet.trim() !== "" || styleSheet.length > 0)
+    styleSheet += "\n } \n";
   return styleSheet;
 };
 

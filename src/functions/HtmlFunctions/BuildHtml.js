@@ -11,12 +11,21 @@ const BuildHtml = (tag) => {
       status: 1,
     };
 
-  if (tag === "span") {
+  if (tag === "p") {
     return {
       id,
       tag,
       text: "Example text",
       status: 2,
+    };
+  }
+
+  if (tag === "img") {
+    return {
+      id,
+      tag,
+      src: "img",
+      status: 3,
     };
   }
 };

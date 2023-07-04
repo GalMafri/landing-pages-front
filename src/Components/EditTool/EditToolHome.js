@@ -24,7 +24,11 @@ const EditToolHome = ({ handler, style }) => {
   };
 
   useEffect(() => {
-    if (elementStyle && elementStyle["background-image"] && elementStyle["background-image"].trim().length > 0)
+    if (
+      elementStyle &&
+      elementStyle["background-image"] &&
+      elementStyle["background-image"].trim().length > 0
+    )
       setUrl(elementStyle["background-image"]);
   }, []);
 
@@ -127,7 +131,9 @@ const EditToolHome = ({ handler, style }) => {
           type="url"
           name="background-image"
           onChange={EditStyleUrlHandler}
-          defaultValue={elementStyle && elementStyle["background-image"] ? elementStyle["background-image"] : ""}
+          defaultValue={
+            elementStyle && elementStyle["background-image"] ? elementStyle["background-image"] : ""
+          }
         />
       </div>
 
@@ -141,12 +147,37 @@ const EditToolHome = ({ handler, style }) => {
               type="url"
               name="background-size"
               onChange={EditStyleUrlHandler}
-              defaultValue={elementStyle && elementStyle["background-size"] ? elementStyle["background-size"] : ""}
+              defaultValue={
+                elementStyle && elementStyle["background-size"]
+                  ? elementStyle["background-size"]
+                  : ""
+              }
             >
               <option value="auto">Auto</option>
               <option value="cover">Cover</option>
               <option value="contain">Contain</option>
               <option value="100% 100%">100% Width & Height</option>
+            </select>
+          </div>
+
+          <div className="editToolColumn">
+            <label className="editTool_text">Background Position:</label>
+            <select
+              className="editTool_select"
+              type="url"
+              name="background-position"
+              onChange={EditStyleUrlHandler}
+              defaultValue={
+                elementStyle && elementStyle["background-position"]
+                  ? elementStyle["background-position"]
+                  : ""
+              }
+            >
+              <option value="center">Center</option>
+              <option value="top">Top</option>
+              <option value="bottom">Bottom</option>
+              <option value="left">Left</option>
+              <option value="right">Right</option>
             </select>
           </div>
 
@@ -157,7 +188,11 @@ const EditToolHome = ({ handler, style }) => {
               type="url"
               name="background-repeat"
               onChange={EditStyleUrlHandler}
-              defaultValue={elementStyle && elementStyle["background-repeat"] ? elementStyle["background-repeat"] : ""}
+              defaultValue={
+                elementStyle && elementStyle["background-repeat"]
+                  ? elementStyle["background-repeat"]
+                  : ""
+              }
             >
               <option value="repeat">Repeat</option>
               <option value="repeat-x">Repeat Horizontally</option>
